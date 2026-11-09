@@ -1,0 +1,248 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Land Acquisition Delay Prediction</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <div class="sidebar">
+        <h2>LandPredict</h2>
+
+        <nav>
+            <a href="#dashboard" class="active">Dashboard</a>
+            <a href="#prediction">New Prediction</a>
+            <a href="#explainability">Explainable AI</a>
+            <a href="#history">Prediction History</a>
+            <a href="#analytics">Analytics</a>
+        </nav>
+    </div>
+
+    <main class="main-content">
+
+        <header>
+            <div>
+                <h1>Land Acquisition Dashboard</h1>
+                <p>Delay Prediction and Risk Assessment System</p>
+            </div>
+        </header>
+
+        <!-- Dashboard Statistics -->
+        <section id="dashboard" class="stats">
+
+            <div class="stat-card">
+                <h3>Total Projects</h3>
+                <p id="total-projects">0</p>
+            </div>
+
+            <div class="stat-card">
+                <h3>Total Predictions</h3>
+                <p id="total-predictions">0</p>
+            </div>
+
+            <div class="stat-card">
+                <h3>High Risk</h3>
+                <p id="high-risk">0</p>
+            </div>
+
+            <div class="stat-card">
+                <h3>Medium Risk</h3>
+                <p id="medium-risk">0</p>
+            </div>
+
+        </section>
+
+        <!-- Prediction Form -->
+        <section id="prediction" class="form-section">
+
+            <h2>New Delay Prediction</h2>
+            <p>Enter the land acquisition project details below.</p>
+
+            <form id="prediction-form">
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+                        <label>Project Name</label>
+                        <input type="text" id="project_name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Land Area (Acres)</label>
+                        <input type="number" id="land_area_acres" min="0" step="any" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Number of Parcels</label>
+                        <input type="number" id="number_of_parcels" min="0" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Affected Households</label>
+                        <input type="number" id="affected_households" min="0" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Ownership Dispute (%)</label>
+                        <input type="number" id="ownership_dispute_percentage" min="0" max="100" step="any" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Litigation Cases</label>
+                        <input type="number" id="litigation_cases" min="0" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Land Records Verified (%)</label>
+                        <input type="number" id="land_records_verified_percentage" min="0" max="100" step="any" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Compensation Readiness (%)</label>
+                        <input type="number" id="compensation_readiness_percentage" min="0" max="100" step="any" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Environmental Clearance Pending</label>
+                        <select id="environmental_clearance_pending" required>
+                            <option value="0">No</option>
+                            <option value="1">Yes</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Forest Land (%)</label>
+                        <input type="number" id="forest_land_percentage" min="0" max="100" step="any" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Public Objections</label>
+                        <input type="number" id="public_objections_count" min="0" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Utility Shifting Required</label>
+                        <select id="utility_shifting_required" required>
+                            <option value="0">No</option>
+                            <option value="1">Yes</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Planned Duration (Days)</label>
+                        <input type="number" id="planned_duration_days" min="1" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Project Type</label>
+                        <select id="project_type" required>
+                            <option value="Highway">Highway</option>
+                            <option value="Dam">Dam</option>
+                            <option value="Industrial">Industrial</option>
+                            <option value="Railway">Railway</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>District</label>
+                        <select id="district" required>
+                            <option value="Hassan">Hassan</option>
+                            <option value="Mandya">Mandya</option>
+                            <option value="Mysuru">Mysuru</option>
+                            <option value="Tumakuru">Tumakuru</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <button type="submit" id="predict-btn">
+                    Predict Delay
+                </button>
+
+            </form>
+
+            <!-- Prediction Result -->
+            <div id="result" class="result-card" hidden>
+
+                <h2>Prediction Result</h2>
+
+                <p>Delay Probability:
+                    <strong id="probability"></strong>
+                </p>
+
+                <p>Risk Category:
+                    <strong id="risk"></strong>
+                </p>
+
+                <p id="result-message"></p>
+
+            </div>
+
+        </section>
+
+        <!-- Explainable AI Section -->
+        <section id="explainability" class="explainability-section">
+
+            <h2>Explainable AI - Why This Prediction?</h2>
+
+            <p>
+                SHAP (SHapley Additive exPlanations) identifies
+                the factors influencing the delay prediction.
+            </p>
+
+            <div id="explanations">
+                <p>Submit a prediction to view the SHAP explanations.</p>
+            </div>
+
+        </section>
+
+        <!-- Prediction History -->
+        <section id="history" class="history-section">
+
+            <h2>Prediction History</h2>
+
+            <div class="table-container">
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Project ID</th>
+                            <th>Project Name</th>
+                            <th>Delay Probability</th>
+                            <th>Risk Category</th>
+                            <th>Predicted At</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="history-table">
+                        <tr>
+                            <td colspan="5">No predictions available yet.</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+
+        </section>
+
+        <!-- Risk Analytics -->
+        <section id="analytics" class="analytics-section">
+
+            <h2>Risk Analytics</h2>
+
+            <canvas id="risk-chart"></canvas>
+
+        </section>
+
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+</html>
